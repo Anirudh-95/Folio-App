@@ -29,6 +29,7 @@ export interface ParseResult {
   holdings: Holding[];
   transactions: Transaction[];
   warnings: string[];
+  cash: number;
 }
 
 export function parseWorkbook(buffer: ArrayBuffer): ParseResult {
@@ -72,6 +73,11 @@ export function parseWorkbook(buffer: ArrayBuffer): ParseResult {
     })
     .filter((h) => h.ticker && h.quantity > 0);
 
+  // Extract CASH row and remove from holdings
+  const cashRow = holdings.find((h) => h.ticker === 'CASH');
+  const cash = cashRow ? cashRow.current_price : 0;
+  const holdingsWithoutCash = holdings.filter((h) => h.ticker !== 'CASH');
+
   // --- Transactions ---
   const txSheet = wb.Sheets[TRANSACTIONS_SHEET];
   if (!txSheet) {
@@ -110,5 +116,5 @@ export function parseWorkbook(buffer: ArrayBuffer): ParseResult {
       .filter((t) => t.ticker && t.quantity > 0);
   }
 
-  return { holdings, transactions, warnings };
+  return { holdings: holdingsWithoutCash, transactions, warnings, cash };
 }

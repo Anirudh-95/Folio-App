@@ -38,4 +38,5 @@ export interface PortfolioState {
   fileName: string | null;
   modalOpen: boolean;
   activeView: 'dashboard' | 'transactions' | 'reports';
+  cash: number;
 }

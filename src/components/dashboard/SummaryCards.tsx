@@ -6,7 +6,7 @@ import { formatCurrency, formatPercent, gainColor } from '../../utils/formatters
 
 export function SummaryCards() {
   const { state } = usePortfolio();
-  const { holdings, prevPrices, pricesLoading } = state;
+  const { holdings, prevPrices, pricesLoading, cash } = state;
 
   const metrics = useMemo(() => {
     let totalValue = 0;
@@ -36,8 +36,9 @@ export function SummaryCards() {
     const stockPct = totalValue > 0 ? (stockValue / totalValue) * 100 : 0;
     const cryptoPct = totalValue > 0 ? (cryptoValue / totalValue) * 100 : 0;
 
-    return { totalValue, totalCost, unrealizedGain, unrealizedPct, dayChange, dayChangePct, stockPct, cryptoPct };
-  }, [holdings, prevPrices]);
+    const totalWithCash = totalValue + cash;
+    return { totalValue: totalWithCash, totalCost, unrealizedGain, unrealizedPct, dayChange, dayChangePct, stockPct, cryptoPct };
+  }, [holdings, prevPrices, cash]);
 
   if (pricesLoading && holdings.length === 0) {
     return (
@@ -54,7 +55,7 @@ export function SummaryCards() {
   const gainStyle = (v: number) => ({ color: gainColor(v) });
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
       <SummaryCard
         label="Total Value"
         value={formatCurrency(metrics.totalValue)}
@@ -90,6 +91,10 @@ export function SummaryCards() {
             {formatPercent(metrics.dayChangePct, true)}
           </span>
         }
+      />
+      <SummaryCard
+        label="Cash"
+        value={formatCurrency(cash)}
       />
       <SummaryCard
         label="Asset Split"

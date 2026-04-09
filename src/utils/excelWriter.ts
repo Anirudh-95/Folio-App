@@ -4,22 +4,28 @@ import type { Holding, Transaction } from '../types';
 export function downloadWorkbook(
   holdings: Holding[],
   transactions: Transaction[],
-  fileName: string
+  fileName: string,
+  cash = 0
 ): void {
   const wb = XLSX.utils.book_new();
 
+  const cashRow = cash > 0
+    ? [{ ticker: 'CASH', asset_type: 'stock', quantity: 1, avg_cost_basis: cash, current_price: cash, date_acquired: new Date().toISOString().split('T')[0] }]
+    : [];
+
   XLSX.utils.book_append_sheet(
     wb,
-    XLSX.utils.json_to_sheet(
-      holdings.map((h) => ({
+    XLSX.utils.json_to_sheet([
+      ...holdings.map((h) => ({
         ticker: h.ticker,
         asset_type: h.asset_type,
         quantity: h.quantity,
         avg_cost_basis: h.avg_cost_basis,
         current_price: h.current_price,
         date_acquired: h.date_acquired,
-      }))
-    ),
+      })),
+      ...cashRow,
+    ]),
     'Holdings'
   );
 

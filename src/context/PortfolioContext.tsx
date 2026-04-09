@@ -10,13 +10,14 @@ import type { Holding, Transaction, PriceMap, PortfolioState } from '../types';
 // ── Actions ──────────────────────────────────────────────────────────────────
 
 type Action =
-  | { type: 'LOAD_FILE'; payload: { holdings: Holding[]; transactions: Transaction[]; fileName: string } }
+  | { type: 'LOAD_FILE'; payload: { holdings: Holding[]; transactions: Transaction[]; fileName: string; cash: number } }
   | { type: 'ADD_TRANSACTION'; payload: Transaction }
   | { type: 'SET_PRICES'; payload: { prices: PriceMap; prevPrices: PriceMap } }
   | { type: 'SET_PRICES_LOADING'; payload: boolean }
   | { type: 'SET_PRICES_ERROR'; payload: string | null }
   | { type: 'SET_MODAL_OPEN'; payload: boolean }
   | { type: 'SET_VIEW'; payload: PortfolioState['activeView'] }
+  | { type: 'SET_CASH'; payload: number }
   | { type: 'CLEAR_DATA' };
 
 // ── Initial state ─────────────────────────────────────────────────────────────
@@ -31,6 +32,7 @@ const initialState: PortfolioState = {
   fileName: null,
   modalOpen: false,
   activeView: 'dashboard',
+  cash: 0,
 };
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -75,7 +77,10 @@ function reducer(state: PortfolioState, action: Action): PortfolioState {
         holdings: action.payload.holdings,
         transactions: action.payload.transactions,
         fileName: action.payload.fileName,
+        cash: action.payload.cash,
       };
+    case 'SET_CASH':
+      return { ...state, cash: action.payload };
     case 'ADD_TRANSACTION':
       return {
         ...state,
@@ -141,6 +146,7 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
           holdings: state.holdings,
           transactions: state.transactions,
           fileName: state.fileName,
+          cash: state.cash,
         })
       );
     } catch {

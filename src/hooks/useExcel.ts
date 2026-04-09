@@ -9,10 +9,10 @@ export function useExcel() {
   const loadFile = useCallback(
     async (file: File): Promise<string[]> => {
       const buffer = await file.arrayBuffer();
-      const { holdings, transactions, warnings } = parseWorkbook(buffer);
+      const { holdings, transactions, warnings, cash } = parseWorkbook(buffer);
       dispatch({
         type: 'LOAD_FILE',
-        payload: { holdings, transactions, fileName: file.name },
+        payload: { holdings, transactions, fileName: file.name, cash },
       });
       return warnings;
     },
@@ -23,9 +23,10 @@ export function useExcel() {
     downloadWorkbook(
       state.holdings,
       state.transactions,
-      state.fileName ?? 'folio_portfolio.xlsx'
+      state.fileName ?? 'folio_portfolio.xlsx',
+      state.cash
     );
-  }, [state.holdings, state.transactions, state.fileName]);
+  }, [state.holdings, state.transactions, state.fileName, state.cash]);
 
   return { loadFile, saveFile };
 }

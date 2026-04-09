@@ -31,7 +31,7 @@ export function EmptyState() {
     createEmptyWorkbook();
     dispatch({
       type: 'LOAD_FILE',
-      payload: { holdings: [], transactions: [], fileName: 'folio_portfolio.xlsx' },
+      payload: { holdings: [], transactions: [], fileName: 'folio_portfolio.xlsx', cash: 0 },
     });
     dispatch({ type: 'SET_MODAL_OPEN', payload: true });
   }
