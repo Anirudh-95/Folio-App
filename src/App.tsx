@@ -3,6 +3,8 @@ import { PageShell } from './components/layout/PageShell';
 import { UploadPage } from './pages/UploadPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { TransactionsPage } from './pages/TransactionsPage';
+import { SimulatorPage } from './pages/SimulatorPage';
+import { NewsPage } from './pages/NewsPage';
 import { AddTradeModal } from './components/modal/AddTradeModal';
 
 function ReportsPage() {
@@ -32,6 +34,8 @@ function AppContent() {
     <PageShell>
       {activeView === 'dashboard' && <DashboardPage />}
       {activeView === 'transactions' && <TransactionsPage />}
+      {activeView === 'simulate' && <SimulatorPage />}
+      {activeView === 'news' && <NewsPage />}
       {activeView === 'reports' && <ReportsPage />}
       {modalOpen && <AddTradeModal />}
     </PageShell>

@@ -1,3 +1,11 @@
+// Apply saved theme before React renders to avoid flash
+const savedTheme = localStorage.getItem('folio_theme') ?? 'dark';
+if (savedTheme === 'dark') {
+  document.documentElement.classList.add('dark');
+} else {
+  document.documentElement.classList.remove('dark');
+}
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { PortfolioProvider } from './context/PortfolioContext';

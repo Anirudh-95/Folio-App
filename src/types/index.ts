@@ -37,6 +37,6 @@ export interface PortfolioState {
   pricesError: string | null;
   fileName: string | null;
   modalOpen: boolean;
-  activeView: 'dashboard' | 'transactions' | 'reports';
+  activeView: 'dashboard' | 'transactions' | 'reports' | 'simulate' | 'news';
   cash: number;
 }

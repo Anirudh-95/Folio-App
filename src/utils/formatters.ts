@@ -23,7 +23,7 @@ export function formatShares(value: number, isCrypto = false): string {
 }
 
 export function gainColor(value: number): string {
-  return value >= 0 ? '#00D897' : '#FF4757';
+  return value >= 0 ? 'rgb(var(--color-gain))' : 'rgb(var(--color-loss))';
 }
 
 export function gainBgClass(value: number): string {
